@@ -7,6 +7,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -19,5 +22,28 @@ public class EmployeeServiceImpl implements EmployeeService {
         BeanUtils.copyProperties(employee, employeeEntity);
         employeeRepository.save(employeeEntity);
         return employee;
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        //converting List<EmployeeEntity> to  List<Employee>
+        List<Employee> employees = employeeRepository.findAll().stream()
+                .map(empEty -> new Employee(
+                        empEty.getId(),
+                        empEty.getFirstName(),
+                        empEty.getLastName(),
+                        empEty.getEmail()))
+                .collect(Collectors.toList());
+
+        return employees;
+    }
+
+    @Override
+    public Employee deleteEmployee(long id) {
+        EmployeeEntity ee = employeeRepository.findById(id).get();
+        employeeRepository.delete(ee);
+        Employee e = new Employee();
+        BeanUtils.copyProperties(ee, e);
+        return e;
     }
 }
