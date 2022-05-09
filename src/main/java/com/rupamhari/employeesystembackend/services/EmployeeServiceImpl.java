@@ -46,4 +46,26 @@ public class EmployeeServiceImpl implements EmployeeService {
         BeanUtils.copyProperties(ee, e);
         return e;
     }
+
+    @Override
+    public Employee getEmployee(long id) {
+        EmployeeEntity ee = employeeRepository.findById(id).get();
+        Employee e = new Employee();
+        BeanUtils.copyProperties(ee, e);
+        return e;
+    }
+
+    @Override
+    public Employee updateEmployee(long id, Employee employee) {
+        var ee = employeeRepository.findById(id).get();
+        ee.setFirstName(employee.getFirstName());
+        ee.setLastName(employee.getLastName());
+        ee.setEmail(employee.getEmail());
+        employeeRepository.save(ee);
+
+        Employee e = new Employee();
+        BeanUtils.copyProperties(ee, e);
+        return e;
+
+    }
 }
