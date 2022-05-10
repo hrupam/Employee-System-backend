@@ -57,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee updateEmployee(long id, Employee employee) {
-        var ee = employeeRepository.findById(id).get();
+        EmployeeEntity ee = employeeRepository.findById(id).get();
         ee.setFirstName(employee.getFirstName());
         ee.setLastName(employee.getLastName());
         ee.setEmail(employee.getEmail());
