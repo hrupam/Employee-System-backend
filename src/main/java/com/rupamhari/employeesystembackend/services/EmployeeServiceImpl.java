@@ -1,6 +1,7 @@
 package com.rupamhari.employeesystembackend.services;
 
 import com.rupamhari.employeesystembackend.entity.EmployeeEntity;
+import com.rupamhari.employeesystembackend.helper.Helper;
 import com.rupamhari.employeesystembackend.model.Employee;
 import com.rupamhari.employeesystembackend.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee createEmployee(Employee employee) {
+        Helper.trimEmployee(employee);
         EmployeeEntity employeeEntity = new EmployeeEntity();
         BeanUtils.copyProperties(employee, employeeEntity);
         employeeRepository.save(employeeEntity);
@@ -57,6 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee updateEmployee(long id, Employee employee) {
+        Helper.trimEmployee(employee);
         EmployeeEntity ee = employeeRepository.findById(id).get();
         ee.setFirstName(employee.getFirstName());
         ee.setLastName(employee.getLastName());
